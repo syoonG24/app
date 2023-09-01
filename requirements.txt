@@ -4,5 +4,6 @@ pandas==2.0.3
 numpy==1.25.0
 scipy==1.11.1
 streamlit_option_menu==0.3.6
-plotly.express==0.4.1
+plotly==5.16.0
+plotly_express==0.4.1
 pillow==9.4.0
