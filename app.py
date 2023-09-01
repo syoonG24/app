@@ -1,4 +1,4 @@
-import matplotlib.ticker as ticker
+
 import streamlit as st
 from streamlit_option_menu import option_menu
 import pandas as pd
@@ -9,7 +9,6 @@ from pytank.utilities import interp_from_dates, interp_dates_row
 import plotly.express as px
 from scipy import stats
 from PIL import Image
-formatter = ticker.EngFormatter()
 icon = Image.open("resources/icon.PNG")
 st.set_page_config(page_title="Material balance",page_icon=icon)
 st.title(" Material balance application :memo:")
@@ -122,12 +121,12 @@ elif options == "Exploratory Data Analysis":
 
         fig_1 = px.line(df_prod, x=date_col, y=oil_rate_col, color=well_name_col,
                         labels={date_col: "Date", oil_rate_col: "Oil Rate (STB/D)"})
-        fig_1.update_layout(title="Production Rate per Well", xaxis_title="Date", yaxis_title="Rate")
+        fig_1.update_layout(title="Production Rate per Well", xaxis_title="Date", yaxis_title="Oil Rate (STB/D)")
 
         fig_12 = px.line(df_prod, x=date_col, y=water_rate_col, color=well_name_col,
                         labels={date_col: "Date",
                                 water_rate_col: "Water Rate (STB/D)"})
-        fig_12.update_layout(title="Production Rate per Well", xaxis_title="Date", yaxis_title="Rate")
+        fig_12.update_layout(title="Production Rate per Well", xaxis_title="Date", yaxis_title="Water Rate (STB/D)")
         st.plotly_chart(fig_1)
         st.plotly_chart(fig_12)
 
@@ -191,15 +190,6 @@ elif options == "Exploratory Data Analysis":
         # The resulting column is the liquid cumulative, so rename it
         df_tank.rename(columns={liquid_vol_col: liquid_cum_col}, inplace=True)
         # Plot cumulatives to check
-        ax_4 = (df_tank.pivot_table(liquid_cum_col, date_col, tank_name_col)
-                .fillna(method="ffill")
-                .plot())
-
-        ax_4.set_title("Liquid Cumulatives per Tank")
-        ax_4.set_ylabel("Liquid Cum (STB/D)")
-        ax_4.set_xlabel("Date")
-        ax_4.yaxis.set_major_formatter(formatter)
-        #st.pyplot(ax_4)
 
         liquid_cum_col_per_tank = liquid_cum_col + "_tank"
         df_press[liquid_cum_col_per_tank] = (
